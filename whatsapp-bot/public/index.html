@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WhatsApp Channel Auto-Post</title>
+    <meta name="description" content="Admin dashboard for scheduling automatic WhatsApp Channel posts." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main id="app">
+      <section id="login-view" class="card centered hidden">
+        <h1>Channel Auto-Post</h1>
+        <p class="muted">Admin sign in</p>
+        <form id="login-form">
+          <label>Username <input name="username" autocomplete="username" required /></label>
+          <label>Password <input name="password" type="password" autocomplete="current-password" required /></label>
+          <button type="submit">Sign in</button>
+          <p class="error" id="login-error"></p>
+        </form>
+      </section>
+
+      <section id="dash-view" class="hidden">
+        <header class="topbar">
+          <h1>Channel Auto-Post</h1>
+          <div class="row">
+            <span id="conn-badge" class="badge">…</span>
+            <button id="logout" class="ghost">Sign out</button>
+          </div>
+        </header>
+
+        <div class="grid">
+          <section class="card">
+            <h2>Connection</h2>
+            <p class="muted" id="conn-detail">Loading…</p>
+            <p class="muted" id="channel-detail"></p>
+            <div id="qr-wrap" class="hidden">
+              <p class="muted">Scan with WhatsApp → Linked devices</p>
+              <img id="qr" alt="WhatsApp login QR code" width="240" height="240" />
+            </div>
+          </section>
+
+          <section class="card">
+            <h2 id="form-title">New post</h2>
+            <form id="post-form">
+              <input type="hidden" name="id" />
+              <label>Title <input name="title" maxlength="200" placeholder="Optional label" /></label>
+              <label>Message / caption
+                <textarea name="caption" rows="4" maxlength="4096" placeholder="What should the channel see?"></textarea>
+              </label>
+              <label>Image or video (optional) <input type="file" name="media" accept="image/*,video/*" /></label>
+              <label>Mode
+                <select name="mode" id="mode">
+                  <option value="manual">Manual only</option>
+                  <option value="once">Once, at a time</option>
+                  <option value="recurring">Recurring (cron)</option>
+                </select>
+              </label>
+              <label id="when-row" class="hidden">Date &amp; time <input type="datetime-local" name="scheduled_at" /></label>
+              <label id="cron-row" class="hidden">Cron expression
+                <input name="cron_expr" placeholder="0 9 * * *" />
+                <small class="muted">min hour day month weekday — e.g. <code>0 9 * * *</code> = daily at 09:00</small>
+              </label>
+              <label>Timezone <input name="timezone" placeholder="UTC" /></label>
+              <label class="inline"><input type="checkbox" name="enabled" checked /> Active</label>
+              <div class="row">
+                <button type="submit">Save post</button>
+                <button type="button" id="reset-form" class="ghost">Clear</button>
+              </div>
+              <p class="error" id="form-error"></p>
+            </form>
+          </section>
+        </div>
+
+        <section class="card">
+          <h2>Posts</h2>
+          <div class="table-wrap"><table id="posts-table">
+            <thead><tr><th>Title</th><th>Type</th><th>Schedule</th><th>Next run</th><th>Status</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </section>
+
+        <section class="card">
+          <h2>History</h2>
+          <div class="table-wrap"><table id="history-table">
+            <thead><tr><th>When</th><th>Post</th><th>Result</th><th>Detail</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </section>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

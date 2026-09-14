@@ -1,0 +1,35 @@
+{
+  "name": "whatsapp-channel-autopost-bot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Auto-post text, images and videos to a WhatsApp Channel on a schedule, with an admin dashboard.",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:init": "node src/scripts/init-db.js",
+    "hash": "node src/scripts/hash-password.js"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.9",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.5.0",
+    "cookie-parser": "^1.4.7",
+    "cron-parser": "^4.9.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
+    "pino": "^9.5.0",
+    "qrcode": "^1.5.4",
+    "zod": "^3.23.8"
+  }
+}
