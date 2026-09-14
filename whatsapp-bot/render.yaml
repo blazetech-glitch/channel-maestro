@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: whatsapp-channel-autopost
+    runtime: node
+    plan: starter
+    rootDir: whatsapp-bot
+    buildCommand: npm install
+    startCommand: node src/server.js
+    healthCheckPath: /healthz
+    disk:
+      # Required: SQLite, uploads and the WhatsApp session live here.
+      name: data
+      mountPath: /opt/render/project/src/whatsapp-bot/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+      - key: CHANNEL_JID
+        sync: false
+      - key: TIMEZONE
+        value: UTC
+      - key: DB_PATH
+        value: /opt/render/project/src/whatsapp-bot/data/bot.db
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/whatsapp-bot/data/uploads
+      - key: WA_AUTH_DIR
+        value: /opt/render/project/src/whatsapp-bot/data/wa-auth
