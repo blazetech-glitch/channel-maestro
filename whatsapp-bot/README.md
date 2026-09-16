@@ -147,3 +147,12 @@ See `.env.example` — `PORT`, `CHANNEL_JID`, `ADMIN_USERNAME`,
 | `WhatsApp is not connected` on Post Now | Wait for the badge to read `open` |
 | `CHANNEL_JID is not configured` | Add the `...@newsletter` id and restart |
 | `better-sqlite3` build error | Install build tools (`python3 make g++`) or use the Dockerfile |
+
+## Verified locally
+
+Install, database setup, admin login, protected API (401 without a session),
+dashboard, post creation, one-off delivery at its slot and recurring cron
+delivery every minute were all exercised end-to-end. The Baileys socket
+connected to WhatsApp and issued a QR code. Deliveries recorded
+`WhatsApp is not connected` because no phone had scanned that QR — after you
+scan once, the same runs post to your channel.
