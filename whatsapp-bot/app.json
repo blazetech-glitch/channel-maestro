@@ -1,0 +1,69 @@
+{
+  "name": "WhatsApp Channel Auto-Post Bot",
+  "description": "Auto-post text, images and videos to a WhatsApp Channel on a schedule, with a secure admin dashboard.",
+  "keywords": [
+    "whatsapp",
+    "channel",
+    "bot",
+    "scheduler",
+    "newsletter"
+  ],
+  "website": "https://github.com/whiskeysockets/baileys",
+  "repository": "https://github.com/your-username/your-repo",
+  "logo": "",
+  "success_url": "/",
+  "stack": "heroku-24",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "SESSION_SECRET": {
+      "description": "Secret used to sign the admin login cookie. A strong random value is generated for you — keep the default.",
+      "generator": "secret"
+    },
+    "ADMIN_USERNAME": {
+      "description": "Username for the admin dashboard login.",
+      "required": true
+    },
+    "ADMIN_PASSWORD_HASH": {
+      "description": "bcrypt hash of your admin password. Generate it with: npm run hash -- \"your-password\" (run locally in the whatsapp-bot folder). Alternatively set ADMIN_PASSWORD instead and leave this blank — the plaintext var is only recommended for first boot.",
+      "required": false
+    },
+    "ADMIN_PASSWORD": {
+      "description": "Plaintext admin password fallback if you don't want to compute a bcrypt hash. Leave blank if you set ADMIN_PASSWORD_HASH.",
+      "required": false
+    },
+    "CHANNEL_JID": {
+      "description": "Your WhatsApp Channel id, ends with @newsletter (e.g. 120363012345678901@newsletter). Find it via WhatsApp Web or after connecting, from the bot logs.",
+      "required": true
+    },
+    "TIMEZONE": {
+      "description": "Timezone used for recurring cron schedules (IANA name).",
+      "value": "UTC",
+      "required": false
+    },
+    "DB_PATH": {
+      "description": "SQLite database file location. /tmp is writable but wiped on every dyno restart — attach Heroku File Storage or deploy on a host with a persistent disk for real durability.",
+      "value": "/tmp/wa-bot/data/bot.db",
+      "required": false
+    },
+    "UPLOAD_DIR": {
+      "description": "Where uploaded images/videos are stored (see DB_PATH note).",
+      "value": "/tmp/wa-bot/data/uploads",
+      "required": false
+    },
+    "WA_AUTH_DIR": {
+      "description": "WhatsApp session storage (see DB_PATH note). Without a persistent disk you must re-scan the QR code after every restart.",
+      "value": "/tmp/wa-bot/data/wa-auth",
+      "required": false
+    }
+  }
+}
