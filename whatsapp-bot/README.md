@@ -103,15 +103,28 @@ Serverless/edge platforms do not — the WhatsApp socket must stay open.
 `ADMIN_USERNAME`, `ADMIN_PASSWORD_HASH`, `CHANNEL_JID` in the dashboard;
 `SESSION_SECRET` is generated. Deploy, then scan the QR from the dashboard.
 
-**Heroku** — `Procfile` included. Heroku's filesystem is ephemeral, so attach a
-persistent volume add-on or use a Docker deploy with a mounted volume; without
-persistence you must re-scan the QR after every restart.
+**Heroku** — easiest way: the one-click button below. Heroku opens a form that
+asks for every required setting (admin username, admin password hash, channel
+JID); `SESSION_SECRET` is generated for you. Fill it in and deploy.
+
+```markdown
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/whatsapp-bot)
+```
+
+> Replace `YOUR_USERNAME/YOUR_REPO` with your GitHub repo after pushing.
+
+Manual deploy with the CLI:
 
 ```bash
 heroku create my-wa-bot
 heroku config:set SESSION_SECRET=... ADMIN_USERNAME=admin ADMIN_PASSWORD_HASH='...' CHANNEL_JID='...@newsletter'
 git subtree push --prefix whatsapp-bot heroku main
 ```
+
+Heroku's filesystem is ephemeral: the SQLite DB, uploads and WhatsApp session
+live in `/tmp` by default and are wiped on every restart (you re-scan the QR).
+For full persistence use the Heroku File Storage add-on or deploy on Render /
+a VPS, which keep a persistent disk.
 
 **Docker / VPS / game panels (Pterodactyl, aaPanel, etc.)**
 
