@@ -60,8 +60,9 @@ app.use(
 
 app.get("/healthz", (_req, res) => res.json({ ok: true, uptime: process.uptime() }));
 app.use("/api", api);
-app.use(express.static(path.join(process.cwd(), "public"), { maxAge: "1h" }));
-app.get("*", (_req, res) => res.sendFile(path.join(process.cwd(), "public", "index.html")));
+const publicDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "public");
+app.use(express.static(publicDir, { maxAge: "1h" }));
+app.get("*", (_req, res) => res.sendFile(path.join(publicDir, "index.html")));
 
 // Central error handler — never leaks stack traces to clients.
 app.use((err, _req, res, _next) => {
