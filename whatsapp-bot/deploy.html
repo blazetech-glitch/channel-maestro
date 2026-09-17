@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deploy WhatsApp Channel Bot to Heroku</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+      text-align: center;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 8px; color: #f8fafc; }
+    p.sub { color: #94a3b8; font-size: .95rem; margin-bottom: 28px; line-height: 1.5; }
+    label { display: block; text-align: left; font-size: .85rem; color: #94a3b8; margin-bottom: 6px; }
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background: #0f172a;
+      color: #f1f5f9;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    input:focus { outline: none; border-color: #6366f1; }
+    .hint { text-align: left; font-size: .78rem; color: #64748b; margin: -14px 0 20px; }
+    a.deploy-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 10px;
+      background: #430098;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .15s ease;
+    }
+    a.deploy-btn:hover { background: #5a10c4; }
+    a.deploy-btn.disabled { background: #334155; color: #94a3b8; pointer-events: none; }
+    .steps {
+      margin-top: 28px;
+      text-align: left;
+      font-size: .85rem;
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+    .steps strong { color: #e2e8f0; }
+    .error { color: #f87171; font-size: .8rem; text-align: left; margin: -14px 0 16px; display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Deploy to Heroku</h1>
+    <p class="sub">One click sends the WhatsApp Channel Auto-Post Bot to Heroku, and Heroku asks you for the required settings (admin login, channel ID, etc.) during setup.</p>
+
+    <label for="repo">Your GitHub repository (username/repo)</label>
+    <input id="repo" type="text" placeholder="e.g. johndoe/whatsapp-bot" autocomplete="off" />
+    <p class="hint">The repo must contain the <strong>whatsapp-bot</strong> folder on the <strong>main</strong> branch.</p>
+    <p class="error" id="error">Enter your repository as username/repo first.</p>
+
+    <a id="deployBtn" class="deploy-btn disabled" href="#" target="_blank" rel="noopener">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 1.5 2.5 20.5h19L12 1.5zm0 6 6 12H6l6-12z"/>
+      </svg>
+      Deploy to Heroku
+    </a>
+
+    <div class="steps">
+      <strong>Before you click:</strong><br />
+      1. Connect this project to GitHub (Lovable editor: <strong>+ menu → GitHub</strong>) so the code is on GitHub.<br />
+      2. Come back here, type <em>username/repo</em> above, and click the button.<br />
+      3. On Heroku's form, fill in <strong>ADMIN_USERNAME</strong>, your admin password, and <strong>CHANNEL_JID</strong> (your channel's <em>…@newsletter</em> id).<br />
+      4. After deploy, open the app, log in, and scan the WhatsApp QR code once.
+    </div>
+  </div>
+
+  <script>
+    var input = document.getElementById('repo');
+    var btn = document.getElementById('deployBtn');
+    var error = document.getElementById('error');
+    var saved = localStorage.getItem('wa-bot-repo');
+    if (saved) input.value = saved;
+
+    function update() {
+      var repo = input.value.trim().replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/, '').replace(/\/+$/, '');
+      var valid = /^[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+$/.test(repo);
+      if (valid) {
+        btn.href = 'https://heroku.com/deploy?template=https://github.com/' + repo + '/tree/main/whatsapp-bot';
+        btn.classList.remove('disabled');
+        error.style.display = 'none';
+        localStorage.setItem('wa-bot-repo', repo);
+      } else {
+        btn.href = '#';
+        btn.classList.add('disabled');
+      }
+    }
+    input.addEventListener('input', update);
+    btn.addEventListener('click', function (e) {
+      update();
+      if (btn.classList.contains('disabled')) {
+        error.style.display = 'block';
+        e.preventDefault();
+      }
+    });
+    update();
+  </script>
+</body>
+</html>
