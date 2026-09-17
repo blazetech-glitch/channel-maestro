@@ -107,6 +107,9 @@ Serverless/edge platforms do not — the WhatsApp socket must stay open.
 asks for every required setting (admin username, admin password hash, channel
 JID); `SESSION_SECRET` is generated for you. Fill it in and deploy.
 
+> Don't want to edit this file? Open `deploy.html` in the `whatsapp-bot` folder —
+> type your GitHub repo once and it builds the correct button link for you.
+
 ```markdown
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/whatsapp-bot)
 ```
